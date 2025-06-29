@@ -50,6 +50,12 @@ class Calculator(ast.NodeTransformer):
         if isinstance(node.op, ast.Div):
             return left_side / right_side
 
+        if isinstance(node.op, ast.Mod):
+            return left_side % right_side
+
+        if isinstance(node.op, ast.Pow):
+            return left_side ** right_side
+
     def visit_UnaryOp(self, node):
         """
         :param node: a variable that links to the current node tree
