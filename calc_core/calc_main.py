@@ -26,8 +26,8 @@ class Calculator(ast.NodeTransformer):
             if not isinstance(parsed_expr, (ast.BinOp, ast.UnaryOp, ast.Constant)):
                 raise AttributeError('Write any binary operation')
 
-        except AttributeError as ae:
-            self.show_info_about_error(ae)
+        except AttributeError as error:
+            self.show_info_about_error(error)
 
     def visit_BinOp(self, node):
         """
@@ -48,7 +48,10 @@ class Calculator(ast.NodeTransformer):
             return left_side * right_side
 
         if isinstance(node.op, ast.Div):
-            return left_side / right_side
+            try:
+                return left_side / right_side
+            except ZeroDivisionError as error:
+                self.show_info_about_error(error)
 
     def visit_UnaryOp(self, node):
         """
@@ -69,11 +72,11 @@ class Calculator(ast.NodeTransformer):
         return node.value
 
     @classmethod
-    def show_info_about_error(cls, ae):
+    def show_info_about_error(cls, error):
         """
-        :param ae: ae - short name of AttributeError. This variable collect info about errors from validation methods.
+        :param error: This parameter collect info about errors from validation methods.
         """
-        print(f'Error: {ae}.\nExpression should include binary operation.\nExample: a + b, a - b, a / b, a * b')
+        print(f'Error: {error}.\nExpression should include binary operation.\nExample: a + b, a - b, a / b, a * b')
         sys.exit()
 
 
